@@ -16,8 +16,8 @@ const Index = () => {
           the first step towards your dream career.
         </p>
         <div className="flex justify-center gap-4">
-          <Button size="lg">Browse Jobs</Button>
-          <Button size="lg" variant="outline">
+          <Button className="bg-primary hover:bg-primary-600 text-white">Browse Jobs</Button>
+          <Button variant="outline" className="border-primary text-primary hover:bg-primary-50">
             Register Now
           </Button>
         </div>
@@ -25,39 +25,23 @@ const Index = () => {
 
       {/* Stats Section */}
       <section className="grid md:grid-cols-3 gap-6">
-        <Card className="p-6 hover:shadow-lg transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="bg-primary-50 p-3 rounded-full">
-              <BriefcaseIcon className="h-6 w-6 text-primary" />
+        {[
+          { icon: BriefcaseIcon, label: "Active Jobs", value: "500+" },
+          { icon: UsersIcon, label: "Placed Students", value: "1000+" },
+          { icon: TrendingUpIcon, label: "Placement Rate", value: "92%" },
+        ].map((stat, index) => (
+          <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-2 border-primary/10">
+            <div className="flex items-center space-x-4">
+              <div className="bg-primary-50 p-3 rounded-full">
+                <stat.icon className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-primary">{stat.value}</p>
+                <p className="text-gray-600">{stat.label}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-2xl font-bold">500+</p>
-              <p className="text-gray-600">Active Jobs</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 hover:shadow-lg transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="bg-primary-50 p-3 rounded-full">
-              <UsersIcon className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">1000+</p>
-              <p className="text-gray-600">Placed Students</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 hover:shadow-lg transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="bg-primary-50 p-3 rounded-full">
-              <TrendingUpIcon className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">92%</p>
-              <p className="text-gray-600">Placement Rate</p>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        ))}
       </section>
 
       {/* Featured Companies */}
@@ -69,7 +53,7 @@ const Index = () => {
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="aspect-video bg-white rounded-lg shadow-sm p-4 flex items-center justify-center"
+              className="aspect-video bg-white rounded-lg shadow-sm p-4 flex items-center justify-center border-2 border-primary/10 hover:border-primary/30 transition-colors"
             >
               <div className="text-gray-400">Company Logo</div>
             </div>
