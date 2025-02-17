@@ -53,25 +53,25 @@ const Statistics = () => {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <Card className="p-6 text-center">
+        <Card className="p-6 text-center border-2 border-primary/10 hover:border-primary/30 transition-all">
           <h3 className="text-lg font-semibold text-gray-600">Total Students Placed</h3>
           <p className="text-3xl font-bold text-primary">367</p>
-          <p className="text-sm text-gray-500">Out of 443 Students</p>
+          <p className="text-sm text-pink-600">Out of 443 Students</p>
         </Card>
-        <Card className="p-6 text-center">
+        <Card className="p-6 text-center border-2 border-primary/10 hover:border-primary/30 transition-all">
           <h3 className="text-lg font-semibold text-gray-600">Highest Package</h3>
           <p className="text-3xl font-bold text-primary">18 LPA</p>
-          <p className="text-sm text-gray-500">Software Development</p>
+          <p className="text-sm text-pink-600">Software Development</p>
         </Card>
-        <Card className="p-6 text-center">
+        <Card className="p-6 text-center border-2 border-primary/10 hover:border-primary/30 transition-all">
           <h3 className="text-lg font-semibold text-gray-600">Average Package</h3>
           <p className="text-3xl font-bold text-primary">7.2 LPA</p>
-          <p className="text-sm text-gray-500">Across All Departments</p>
+          <p className="text-sm text-pink-600">Across All Departments</p>
         </Card>
       </div>
 
-      <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Department-wise Placement Statistics</h2>
+      <Card className="p-6 border-2 border-primary/10">
+        <h2 className="text-xl font-semibold mb-4 text-primary">Department-wise Placement Statistics</h2>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -83,52 +83,52 @@ const Statistics = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.1} />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
               <Bar name="Placed Students (%)" dataKey="placed" fill="#1a365d" />
-              <Bar name="Avg Package (LPA)" dataKey="avgPackage" fill="#4299e1" />
+              <Bar name="Avg Package (LPA)" dataKey="avgPackage" fill="#ec4899" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </Card>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Top Recruiting Companies</h3>
+        <Card className="p-6 border-2 border-primary/10">
+          <h3 className="text-lg font-semibold mb-4 text-primary">Top Recruiting Companies</h3>
           <ul className="space-y-4">
-            <li className="flex justify-between items-center">
-              <span>TCS</span>
+            <li className="flex justify-between items-center p-2 hover:bg-pink-50 rounded-lg transition-colors">
+              <span className="text-gray-700">TCS</span>
               <span className="text-primary font-semibold">45 Students</span>
             </li>
-            <li className="flex justify-between items-center">
-              <span>Infosys</span>
+            <li className="flex justify-between items-center p-2 hover:bg-pink-50 rounded-lg transition-colors">
+              <span className="text-gray-700">Infosys</span>
               <span className="text-primary font-semibold">38 Students</span>
             </li>
-            <li className="flex justify-between items-center">
-              <span>Wipro</span>
+            <li className="flex justify-between items-center p-2 hover:bg-pink-50 rounded-lg transition-colors">
+              <span className="text-gray-700">Wipro</span>
               <span className="text-primary font-semibold">32 Students</span>
             </li>
-            <li className="flex justify-between items-center">
-              <span>Accenture</span>
+            <li className="flex justify-between items-center p-2 hover:bg-pink-50 rounded-lg transition-colors">
+              <span className="text-gray-700">Accenture</span>
               <span className="text-primary font-semibold">28 Students</span>
             </li>
           </ul>
         </Card>
 
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Department-wise Details</h3>
+        <Card className="p-6 border-2 border-primary/10">
+          <h3 className="text-lg font-semibold mb-4 text-primary">Department-wise Details</h3>
           <div className="space-y-4">
             {departmentData.map((dept) => (
-              <div key={dept.name} className="flex justify-between items-center">
-                <span>{dept.name}</span>
+              <div key={dept.name} className="flex justify-between items-center p-2 hover:bg-pink-50 rounded-lg transition-colors">
+                <span className="text-gray-700">{dept.name}</span>
                 <div className="text-right">
                   <div className="text-primary font-semibold">
                     {dept.placed}% Placed
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-pink-600">
                     {dept.placed} out of {dept.totalStudents} students
                   </div>
                 </div>

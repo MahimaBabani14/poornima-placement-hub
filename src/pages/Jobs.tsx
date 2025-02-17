@@ -76,11 +76,11 @@ const Jobs = () => {
         <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-md">
         <div className="relative flex-1">
           <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <Input
-            className="pl-10"
+            className="pl-10 border-2 border-primary/20 focus:border-primary/50"
             placeholder="Search opportunities..."
             type="search"
             value={searchQuery}
@@ -91,7 +91,7 @@ const Jobs = () => {
           value={selectedDepartment}
           onValueChange={setSelectedDepartment}
         >
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-[200px] border-2 border-primary/20">
             <SelectValue placeholder="Select department" />
           </SelectTrigger>
           <SelectContent>
@@ -106,7 +106,7 @@ const Jobs = () => {
           value={selectedType}
           onValueChange={setSelectedType}
         >
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-[200px] border-2 border-primary/20">
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
           <SelectContent>
@@ -123,7 +123,7 @@ const Jobs = () => {
         {placementOpportunities.map((opportunity) => (
           <Card
             key={opportunity.id}
-            className="p-6 hover:shadow-lg transition-shadow"
+            className="p-6 hover:shadow-lg transition-shadow border-2 border-primary/10 hover:border-primary/30"
           >
             <div className="flex flex-col md:flex-row justify-between gap-4">
               <div className="space-y-4">
@@ -136,24 +136,24 @@ const Jobs = () => {
                 </div>
                 <p className="text-gray-600">{opportunity.description}</p>
                 <div className="flex flex-wrap gap-6 text-sm">
-                  <div className="flex items-center gap-1 text-gray-600">
+                  <div className="flex items-center gap-1 text-primary">
                     <IndianRupee className="h-4 w-4" />
                     <span>{opportunity.package} LPA</span>
                   </div>
-                  <div className="flex items-center gap-1 text-gray-600">
+                  <div className="flex items-center gap-1 text-pink-600">
                     <Clock className="h-4 w-4" />
                     <span>Deadline: {opportunity.deadline}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-gray-600">
+                  <div className="flex items-center gap-1 text-primary">
                     <GraduationCap className="h-4 w-4" />
                     <span>Min. CGPA: {opportunity.cgpa}</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col gap-4 min-w-[150px]">
-                <Button className="w-full">Apply Now</Button>
+                <Button className="w-full bg-primary hover:bg-primary-600">Apply Now</Button>
                 <div className="text-center">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary">
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-700">
                     {opportunity.eligibility}
                   </span>
                 </div>
@@ -167,3 +167,4 @@ const Jobs = () => {
 };
 
 export default Jobs;
+
