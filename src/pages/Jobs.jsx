@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const departments = [
   { value: "all", label: "All Departments" },
@@ -29,32 +29,64 @@ const jobTypes = [
   { value: "ppo", label: "PPO opportunity" },
 ];
 
+// Sample job data for initial testing
+const sampleJobs = [
+  {
+    _id: "1",
+    role: "Software Developer",
+    company: "Tech Corp",
+    type: "placement",
+    package: "12",
+    deadline: "2024-05-01",
+    eligibility: "CSE, ECE",
+    cgpa: "7.5",
+    description: "Looking for talented software developers to join our team."
+  },
+  {
+    _id: "2",
+    role: "Data Analyst Intern",
+    company: "Data Solutions",
+    type: "internship",
+    package: "6",
+    deadline: "2024-04-15",
+    eligibility: "CSE",
+    cgpa: "7.0",
+    description: "3-month internship opportunity in data analytics."
+  }
+];
+
 const Jobs = () => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState(sampleJobs); // Using sample data initially
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchJobs();
   }, []);
 
   const fetchJobs = async () => {
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:5000/api/jobs');
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
       const data = await response.json();
-      setJobs(data);
+      if (data && Array.isArray(data)) {
+        setJobs(data);
+      } else {
+        setJobs(sampleJobs); // Fallback to sample data if API fails
+      }
     } catch (error) {
+      console.error('Error fetching jobs:', error);
       toast({
-        title: "Error",
-        description: "Failed to load job opportunities",
-        variant: "destructive",
+        title: "Notice",
+        description: "Using sample job data for demonstration",
       });
+      setJobs(sampleJobs); // Fallback to sample data if API fails
     } finally {
       setLoading(false);
     }
@@ -79,7 +111,8 @@ const Jobs = () => {
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDepartment = selectedDepartment === "all" || job.eligibility.includes(selectedDepartment.toUpperCase());
+    const matchesDepartment = selectedDepartment === "all" || 
+      (job.eligibility && job.eligibility.toLowerCase().includes(selectedDepartment.toLowerCase()));
     const matchesType = selectedType === "all" || job.type === selectedType;
     return matchesSearch && matchesDepartment && matchesType;
   });
@@ -89,7 +122,7 @@ const Jobs = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold text-primary">Campus Placement Portal</h1>
         <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
