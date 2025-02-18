@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import Notifications from "@/components/Notifications";
 
 const departments = [
   { value: "all", label: "All Departments" },
@@ -29,7 +29,6 @@ const jobTypes = [
   { value: "ppo", label: "PPO opportunity" },
 ];
 
-// Sample job data for initial testing
 const sampleJobs = [
   {
     _id: "1",
@@ -60,7 +59,7 @@ const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
-  const [jobs, setJobs] = useState(sampleJobs); // Using sample data initially
+  const [jobs, setJobs] = useState(sampleJobs);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const Jobs = () => {
       if (data && Array.isArray(data)) {
         setJobs(data);
       } else {
-        setJobs(sampleJobs); // Fallback to sample data if API fails
+        setJobs(sampleJobs);
       }
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -86,7 +85,7 @@ const Jobs = () => {
         title: "Notice",
         description: "Using sample job data for demonstration",
       });
-      setJobs(sampleJobs); // Fallback to sample data if API fails
+      setJobs(sampleJobs);
     } finally {
       setLoading(false);
     }
@@ -94,7 +93,6 @@ const Jobs = () => {
 
   const handleApply = async (jobId) => {
     try {
-      // TODO: Implement job application logic
       toast({
         title: "Success",
         description: "Application submitted successfully!",
@@ -122,102 +120,108 @@ const Jobs = () => {
   }
 
   return (
-    <div className="space-y-8 p-4">
-      <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-primary">Campus Placement Portal</h1>
-        <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
-      </div>
-
-      <div className="flex flex-col md:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-md">
-        <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            className="pl-10 border-2 border-primary/20 focus:border-primary/50"
-            placeholder="Search opportunities..."
-            type="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+    <div className="flex flex-col lg:flex-row gap-8 p-4">
+      <div className="flex-1 space-y-8">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-primary">Campus Placement Portal</h1>
+          <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
         </div>
-        <Select
-          value={selectedDepartment}
-          onValueChange={setSelectedDepartment}
-        >
-          <SelectTrigger className="w-[200px] border-2 border-primary/20">
-            <SelectValue placeholder="Select department" />
-          </SelectTrigger>
-          <SelectContent>
-            {departments.map((dept) => (
-              <SelectItem key={dept.value} value={dept.value}>
-                {dept.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          value={selectedType}
-          onValueChange={setSelectedType}
-        >
-          <SelectTrigger className="w-[200px] border-2 border-primary/20">
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent>
-            {jobTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+
+        <div className="flex flex-col md:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-md">
+          <div className="relative flex-1">
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              className="pl-10 border-2 border-primary/20 focus:border-primary/50"
+              placeholder="Search opportunities..."
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Select
+            value={selectedDepartment}
+            onValueChange={setSelectedDepartment}
+          >
+            <SelectTrigger className="w-[200px] border-2 border-primary/20">
+              <SelectValue placeholder="Select department" />
+            </SelectTrigger>
+            <SelectContent>
+              {departments.map((dept) => (
+                <SelectItem key={dept.value} value={dept.value}>
+                  {dept.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
+            value={selectedType}
+            onValueChange={setSelectedType}
+          >
+            <SelectTrigger className="w-[200px] border-2 border-primary/20">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              {jobTypes.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid gap-6">
+          {filteredJobs.map((job) => (
+            <Card
+              key={job._id}
+              className="p-6 hover:shadow-lg transition-shadow border-2 border-primary/10 hover:border-primary/30"
+            >
+              <div className="flex flex-col md:flex-row justify-between gap-4">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-primary">{job.role}</h3>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Building2 className="h-4 w-4" />
+                      <span>{job.company}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600">{job.description}</p>
+                  <div className="flex flex-wrap gap-6 text-sm">
+                    <div className="flex items-center gap-1 text-primary">
+                      <IndianRupee className="h-4 w-4" />
+                      <span>{job.package} LPA</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-pink-600">
+                      <Clock className="h-4 w-4" />
+                      <span>Deadline: {new Date(job.deadline).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-primary">
+                      <GraduationCap className="h-4 w-4" />
+                      <span>Min. CGPA: {job.cgpa}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4 min-w-[150px]">
+                  <Button 
+                    className="w-full bg-primary hover:bg-primary-600"
+                    onClick={() => handleApply(job._id)}
+                  >
+                    Apply Now
+                  </Button>
+                  <div className="text-center">
+                    <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-700">
+                      {job.eligibility}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
 
-      <div className="grid gap-6">
-        {filteredJobs.map((job) => (
-          <Card
-            key={job._id}
-            className="p-6 hover:shadow-lg transition-shadow border-2 border-primary/10 hover:border-primary/30"
-          >
-            <div className="flex flex-col md:flex-row justify-between gap-4">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-xl font-semibold text-primary">{job.role}</h3>
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Building2 className="h-4 w-4" />
-                    <span>{job.company}</span>
-                  </div>
-                </div>
-                <p className="text-gray-600">{job.description}</p>
-                <div className="flex flex-wrap gap-6 text-sm">
-                  <div className="flex items-center gap-1 text-primary">
-                    <IndianRupee className="h-4 w-4" />
-                    <span>{job.package} LPA</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-pink-600">
-                    <Clock className="h-4 w-4" />
-                    <span>Deadline: {new Date(job.deadline).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-primary">
-                    <GraduationCap className="h-4 w-4" />
-                    <span>Min. CGPA: {job.cgpa}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-4 min-w-[150px]">
-                <Button 
-                  className="w-full bg-primary hover:bg-primary-600"
-                  onClick={() => handleApply(job._id)}
-                >
-                  Apply Now
-                </Button>
-                <div className="text-center">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-700">
-                    {job.eligibility}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Card>
-        ))}
+      <div className="lg:w-[400px]">
+        <Notifications />
       </div>
     </div>
   );
