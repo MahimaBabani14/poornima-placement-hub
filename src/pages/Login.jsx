@@ -12,7 +12,8 @@ import {
   ArrowRight, 
   CheckCircle, 
   Briefcase,
-  GraduationCap
+  GraduationCap,
+  Sparkles
 } from "lucide-react";
 
 const Login = () => {
@@ -83,29 +84,32 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col md:flex-row overflow-hidden bg-gradient-to-br from-primary-50 to-white">
       {/* Left panel (decorative) */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 p-6">
-        <div className="flex flex-col justify-between w-full max-w-lg mx-auto h-full">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary via-primary-800 to-primary-700 p-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-x-40 -translate-y-20 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full translate-x-20 translate-y-10 blur-3xl"></div>
+        
+        <div className="flex flex-col justify-between w-full max-w-lg mx-auto h-full relative z-10">
           {/* Logo and branding */}
           <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl">
+            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl animate-float">
               <GraduationCap className="h-8 w-8 text-white" />
               <span className="text-white text-xl font-bold">Poornima Placements</span>
             </div>
           </div>
           
           {/* Main content */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             <div className="space-y-6">
-              <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
+              <h1 className="text-5xl font-bold text-white leading-tight">Discover Your <span className="text-accent">Dream Career</span></h1>
               <p className="text-white/80 text-lg">
-                Log in to access your personalized placement dashboard and opportunities
+                Access personalized job opportunities from top companies tailored to your skills and aspirations
               </p>
             </div>
             
             <div className="space-y-8">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300 border border-white/10 shadow-lg">
                 <div className="flex space-x-4">
                   <div className="bg-white/20 rounded-full p-3 flex-shrink-0">
                     <Briefcase className="h-8 w-8 text-white" />
@@ -117,7 +121,7 @@ const Login = () => {
                 </div>
               </div>
               
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300 border border-white/10 shadow-lg">
                 <div className="flex space-x-4">
                   <div className="bg-white/20 rounded-full p-3 flex-shrink-0">
                     <CheckCircle className="h-8 w-8 text-white" />
@@ -139,8 +143,10 @@ const Login = () => {
       </div>
       
       {/* Right panel (login form) */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6 bg-gradient-to-b from-white to-primary-50/30">
-        <div className="w-full max-w-md space-y-8">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 relative">
+        <div className="absolute inset-0 bg-white/40 backdrop-blur-sm -z-10"></div>
+        
+        <div className="w-full max-w-md space-y-8 relative z-10">
           {/* Mobile logo (only visible on small screens) */}
           <div className="md:hidden flex justify-center mb-8">
             <div className="inline-flex items-center space-x-2 bg-primary/10 px-4 py-2 rounded-xl">
@@ -150,13 +156,13 @@ const Login = () => {
           </div>
           
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold text-gray-900 gradient-text">Sign in to your account</h2>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-900 to-primary-600 bg-clip-text text-transparent">Welcome Back</h2>
             <p className="text-gray-600">
               Enter your credentials to access the placement portal
             </p>
           </div>
           
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-primary/10">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border border-primary/10">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
@@ -177,6 +183,9 @@ const Login = () => {
                           : "border-gray-200 focus:border-primary"
                       }`}
                     />
+                    {!errors.email && formData.email && (
+                      <Sparkles className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                    )}
                   </div>
                   {errors.email && (
                     <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
@@ -265,14 +274,14 @@ const Login = () => {
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  className="w-full py-2.5 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  className="w-full py-2.5 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm"
                   onClick={() => navigate("/register/student")}
                 >
                   Student
                 </button>
                 <button
                   type="button"
-                  className="w-full py-2.5 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  className="w-full py-2.5 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm"
                   onClick={() => navigate("/register/alumni")}
                 >
                   Alumni
