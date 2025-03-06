@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, GraduationCap, LogIn, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -8,12 +8,14 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Jobs", href: "/jobs" },
     { name: "Profile", href: "/profile" },
     { name: "Statistics", href: "/statistics" },
+    { name: "About", href: "/about" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -68,7 +70,11 @@ const Navbar = () => {
               variant="default" 
               size="sm" 
               className="ml-2 bg-gradient-to-r from-primary-800 to-primary hover:shadow-button-glow transition-all duration-300"
-              onClick={() => location.pathname !== "/login" && location.pathname !== "/register" && location.replace("/login")}
+              onClick={() => {
+                if (location.pathname !== "/login" && location.pathname !== "/register") {
+                  navigate("/login");
+                }
+              }}
             >
               <LogIn className="h-4 w-4 mr-1" /> Login
             </Button>
@@ -125,7 +131,9 @@ const Navbar = () => {
                 size="sm"
                 onClick={() => {
                   setIsOpen(false);
-                  location.pathname !== "/login" && location.pathname !== "/register" && location.replace("/login");
+                  if (location.pathname !== "/login" && location.pathname !== "/register") {
+                    navigate("/login");
+                  }
                 }}
               >
                 <LogIn className="h-4 w-4 mr-1" /> Login
