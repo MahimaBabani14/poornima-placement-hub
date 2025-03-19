@@ -11,6 +11,7 @@ import Statistics from "./pages/Statistics";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import About from "./pages/About";
+import ContactUs from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/statistics" element={<Statistics />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

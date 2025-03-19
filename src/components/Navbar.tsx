@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, GraduationCap, LogIn, Bell, Search } from "lucide-react";
@@ -16,6 +15,7 @@ const Navbar = () => {
     { name: "Profile", href: "/profile" },
     { name: "Statistics", href: "/statistics" },
     { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
