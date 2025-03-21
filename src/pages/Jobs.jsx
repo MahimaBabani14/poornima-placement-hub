@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -107,11 +108,17 @@ const Jobs = () => {
   };
 
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchQuery.toLowerCase());
+    // Safely check if properties exist before calling toLowerCase()
+    const matchesSearch = 
+      (job.role && job.role.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (job.company && job.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (job.description && job.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    
     const matchesDepartment = selectedDepartment === "all" || 
       (job.eligibility && job.eligibility.toLowerCase().includes(selectedDepartment.toLowerCase()));
+    
     const matchesType = selectedType === "all" || job.type === selectedType;
+    
     return matchesSearch && matchesDepartment && matchesType;
   });
 
