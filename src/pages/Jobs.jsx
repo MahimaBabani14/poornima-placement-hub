@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, Building2, Clock, IndianRupee, GraduationCap } from "lucide-react";
+import { SearchIcon, Building2, Clock, IndianRupee, GraduationCap, HelpCircle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import Notifications from "@/components/Notifications";
+import HelpSystem, { HelpTooltip, InfoPopover, HelpIconButton } from "@/components/HelpSystem";
 
 const departments = [
   { value: "all", label: "All Departments" },
@@ -62,6 +62,7 @@ const Jobs = () => {
   const [selectedType, setSelectedType] = useState("all");
   const [jobs, setJobs] = useState(sampleJobs);
   const [loading, setLoading] = useState(false);
+  const [showHelpTour, setShowHelpTour] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -129,9 +130,12 @@ const Jobs = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-8 p-4">
       <div className="flex-1 space-y-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-primary">Campus Placement Portal</h1>
-          <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
+        <div className="flex items-center justify-between mb-8">
+          <div className="text-center flex-1">
+            <h1 className="text-2xl font-bold text-primary">Campus Placement Portal</h1>
+            <p className="text-gray-600">Current Opportunities for 2024 Batch</p>
+          </div>
+          <HelpIconButton className="ml-2" />
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-md">
@@ -145,36 +149,51 @@ const Jobs = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <Select
-            value={selectedDepartment}
-            onValueChange={setSelectedDepartment}
-          >
-            <SelectTrigger className="w-[200px] border-2 border-primary/20">
-              <SelectValue placeholder="Select department" />
-            </SelectTrigger>
-            <SelectContent>
-              {departments.map((dept) => (
-                <SelectItem key={dept.value} value={dept.value}>
-                  {dept.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={selectedType}
-            onValueChange={setSelectedType}
-          >
-            <SelectTrigger className="w-[200px] border-2 border-primary/20">
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent>
-              {jobTypes.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="w-full md:w-auto">
+            <HelpTooltip content="Filter jobs by your academic department">
+              <Select
+                value={selectedDepartment}
+                onValueChange={setSelectedDepartment}
+              >
+                <SelectTrigger className="w-[200px] border-2 border-primary/20">
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept.value} value={dept.value}>
+                      {dept.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </HelpTooltip>
+          </div>
+          <div className="w-full md:w-auto">
+            <HelpTooltip content="Choose between full-time placements, internships, or PPO opportunities">
+              <Select
+                value={selectedType}
+                onValueChange={setSelectedType}
+              >
+                <SelectTrigger className="w-[200px] border-2 border-primary/20">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {jobTypes.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </HelpTooltip>
+          </div>
+        </div>
+
+        <div className="mb-4 flex justify-between items-center">
+          <div className="text-sm text-gray-500">
+            {filteredJobs.length} {filteredJobs.length === 1 ? 'opportunity' : 'opportunities'} found
+          </div>
+          <HelpSystem />
         </div>
 
         <div className="grid gap-6">
@@ -194,18 +213,27 @@ const Jobs = () => {
                   </div>
                   <p className="text-gray-600">{job.description}</p>
                   <div className="flex flex-wrap gap-6 text-sm">
-                    <div className="flex items-center gap-1 text-primary">
-                      <IndianRupee className="h-4 w-4" />
-                      <span>{job.package} LPA</span>
-                    </div>
+                    <InfoPopover 
+                      title="Package Details" 
+                      content="Annual package offered in Lakhs Per Annum (LPA). May include base salary, variable pay, and other benefits."
+                    >
+                      <div className="flex items-center gap-1 text-primary">
+                        <IndianRupee className="h-4 w-4" />
+                        <span>{job.package} LPA</span>
+                      </div>
+                    </InfoPopover>
                     <div className="flex items-center gap-1 text-pink-600">
                       <Clock className="h-4 w-4" />
                       <span>Deadline: {new Date(job.deadline).toLocaleDateString()}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-primary">
-                      <GraduationCap className="h-4 w-4" />
-                      <span>Min. CGPA: {job.cgpa}</span>
-                    </div>
+                    <InfoPopover 
+                      content="Minimum CGPA required to be eligible for this opportunity"
+                    >
+                      <div className="flex items-center gap-1 text-primary">
+                        <GraduationCap className="h-4 w-4" />
+                        <span>Min. CGPA: {job.cgpa}</span>
+                      </div>
+                    </InfoPopover>
                   </div>
                 </div>
                 <div className="flex flex-col gap-4 min-w-[150px]">
@@ -215,11 +243,13 @@ const Jobs = () => {
                   >
                     Apply Now
                   </Button>
-                  <div className="text-center">
-                    <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-700">
-                      {job.eligibility}
-                    </span>
-                  </div>
+                  <HelpTooltip content="Departments eligible to apply for this opportunity">
+                    <div className="text-center">
+                      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-700">
+                        {job.eligibility}
+                      </span>
+                    </div>
+                  </HelpTooltip>
                 </div>
               </div>
             </Card>

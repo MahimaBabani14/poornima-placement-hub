@@ -1,6 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import FloatingHelpButton from "./FloatingHelpButton";
 
 const Layout = () => {
   return (
@@ -30,6 +31,8 @@ const Layout = () => {
       <main className="container mx-auto px-4 py-8 relative z-10">
         <Outlet />
       </main>
+      
+      <FloatingHelpButton />
       
       {/* Professional footer accent */}
       <div className="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-100 via-accent/30 to-primary-100 z-30"></div>
