@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, GraduationCap, LogIn, Bell, Search } from "lucide-react";
+import { Menu, X, GraduationCap, LogIn, Bell, Search, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Jobs", href: "/jobs" },
+    { name: "Placement Status", href: "/placement-status", icon: <FileCheck className="h-4 w-4 mr-1" /> },
     { name: "Profile", href: "/profile" },
     { name: "Statistics", href: "/statistics" },
     { name: "About", href: "/about" },
@@ -66,7 +68,10 @@ const Navbar = () => {
                     : "text-gray-600 hover:text-primary-800"
                 }`}
               >
-                <span className="relative z-10">{item.name}</span>
+                <span className="relative z-10 flex items-center">
+                  {item.icon && item.icon}
+                  {item.name}
+                </span>
                 {!isActive(item.href) && (
                   <span className="absolute bottom-0 left-0 w-full h-full bg-primary-50 scale-0 group-hover:scale-100 transition-transform duration-300 origin-bottom rounded-xl -z-0"></span>
                 )}
@@ -151,7 +156,10 @@ const Navbar = () => {
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
-                  {item.name}
+                  <span className="flex items-center">
+                    {item.icon && item.icon}
+                    {item.name}
+                  </span>
                 </Link>
               ))}
               
